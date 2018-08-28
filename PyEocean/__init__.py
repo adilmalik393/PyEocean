@@ -47,8 +47,14 @@ class Client(object):
         :param response:
         :return: status and message as tupple
         """
-        return int(response.find('statuscode').text),\
-            response.find('statusmessage').text
+        import xml.etree.ElementTree as ET
+        response_string = ''
+        root = ET.fromstring(response.text)
+        for child in root.findall('data')[0][0]:
+            if child.tag == 'statuscode' or child.tag == 'statusmessage':
+                response_string = response_string + child.tag + ": " + child.text + ","
+
+        return response_string
 
     def __parse_html_response(self, response):
         raise NotImplementedError
@@ -80,7 +86,7 @@ class Client(object):
             params['serviceprovider'] = self.service_provider
 
         response = requests.\
-            get('http://' + self.server + ':' + self.port, params=params)
+            get('http://' + self.server + ':' + self.port + '/api', params=params)
 
         if self.response_fmt == 'xml':
             return self.__parse_xml_response(response)
@@ -106,4 +112,3 @@ class Client(object):
         :return: message_id
         """
         return self.__send(message, recipient, message_type='WAPPUSH', action='sendmessage')
-
