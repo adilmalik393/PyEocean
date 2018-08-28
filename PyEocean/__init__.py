@@ -95,7 +95,7 @@ class Client(object):
         :param recipient:
         :return: message_id
         """
-        return self.__send(message, recipient, message_type='text')
+        return self.__send(message, recipient, message_type='TEXT', action='sendmessage')
 
     def send_wappush(self, message, recipient):
         """
@@ -105,5 +105,5 @@ class Client(object):
         :param recipient:
         :return: message_id
         """
-        return self.__send(message, recipient, message_type='wappush')
+        return self.__send(message, recipient, message_type='WAPPUSH', action='sendmessage')
 
