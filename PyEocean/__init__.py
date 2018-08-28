@@ -63,7 +63,7 @@ class Client(object):
         :param action:
         :return:
         """
-        payload = {
+        params = {
             'action': action,
             'username': self.username,
             'password': self.password,
@@ -77,10 +77,10 @@ class Client(object):
         }
 
         if self.service_provider:
-            payload['serviceprovider'] = self.service_provider
+            params['serviceprovider'] = self.service_provider
 
         response = requests.\
-            get(self.server + ':' + self.port, payload=payload)
+            get('http://' + self.server + ':' + self.port, params=params)
 
         if self.response_fmt == 'xml':
             return self.__parse_xml_response(response)
