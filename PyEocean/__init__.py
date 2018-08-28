@@ -81,7 +81,7 @@ class Client(object):
 
         response = requests.\
             get('http://' + self.server + ':' + self.port, params=params)
-
+        return response
         if self.response_fmt == 'xml':
             return self.__parse_xml_response(response)
         else:
